@@ -12,17 +12,16 @@ $(document).ready(function(){
 	var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext("2d");
     
-    var moveQ = []              // 
+    var moveQ = []
+    /*
+      When the player swipes the screen a certain way, it will add the moves to a move Queue.
+      I think this is necessary because in Snake, you want to do a lot of fast sequential moves.
+     */
 
 	// Event listeners for canvas...
     $(canvas).on("mousedown mousemove touchstart touchmove touchend", function(evt){
         doSomething(evt, moveQ)
     })
-	// canvas.addEventListener("mousedown", doSomething);
-    // canvas.addEventListener("mousemove", doSomething);
-    // canvas.addEventListener("touchstart", doSomething);
-    // canvas.addEventListener("touchmove", doSomething);
-    // canvas.addEventListener("touchend", doSomething);
 
 	
 	var Grid = {};
