@@ -11,6 +11,7 @@ window.requestAnimFrame = (function(){
 var cell_dim = 64;				// cells are squares, only need one dimension
 var LETTERNUM = 3;				// magic number for now on number of letters
 var moveQ = []					// makin moveQ global cuz fuckit
+var sound = new Audio('../sounds/Swoosh03.mp3'); //swooshing audio for swiping
 	
 $(document).ready(function(){
 
@@ -34,20 +35,21 @@ $(document).ready(function(){
 	var canvas = document.getElementById("canvas");
 	var rightswipe = Hammer(canvas).on("swiperight", function(event){
     	moveQ.push({x:1,y:0});
-    	var sound = new Audio('Swoosh03.mp3');
+    	
     	sound.play();
     	console.log('you done rightswipe!');
     	console.log(moveQ);
     });
     var leftswipe = Hammer(canvas).on("swipeleft", function(event){
     	console.log('you done leftswipe!!!!');
-    	var sound = new Audio('Swoosh03.mp3');
+    	
     	sound.play();
     	moveQ.push({x:-1,y:0});
     	console.log(moveQ);
     });
     var upswipe = Hammer(canvas).on("swipeup", function(event){
     	moveQ.push({x:0,y:-1});
+    	sound.play();
     	console.log('you done upswipe!!');
 
     });
@@ -55,11 +57,13 @@ $(document).ready(function(){
     	moveQ.push({x:0,y:1});
     	console.log('you done downswipe!!!');
     	console.log(moveQ);
+    	sound.play();
     });
     var downswipe = Hammer(canvas).on("swipedown", function(event){
     	moveQ.push({x:0,y:1});
     	console.log('you done downswipe!!!');    	
     	console.log(moveQ);
+    	sound.play();
 
     });
     	
