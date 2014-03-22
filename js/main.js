@@ -13,16 +13,23 @@ var LETTERNUM = 3;              // magic number for now on number of letters
 
 $(document).ready(function(){
 
-    var windowH = $(window).height();
-    var windowW = $(window).width();
+	$('body').bind("touchmove", {}, function(event){
+  		event.preventDefault();
+	});
+
+	var windowH = $(window).height();
+	var windowW = $(window).width();
 
     $("#canvas").attr({
         height: windowH,
         width: windowW
     });
-
-
-    var moveQ = []
+  
+    /*
+      When the player swipes the screen a certain way, it will add the moves to a move Queue.
+      I think this is necessary because in Snake, you want to do a lot of fast sequential moves.
+     */
+	var moveQ = []
 
     var canvas = document.getElementById("canvas");
     var rightswipe = Hammer(canvas).on("dragright", function(event){
@@ -34,34 +41,21 @@ $(document).ready(function(){
         moveQ.push({x:1,y:0});
         
     	alert('you done leftdrag!!!!');
-    	moveQ.push({x:1,y:0});
+    	moveQ.push({x:-1,y:0});
     });
     var upswipe = Hammer(canvas).on("dragup", function(event){
-    	moveQ.push({x:1,y:0});
+    	moveQ.push({x:0,y:-1});
     	alert('you done updrag!!');
     });
     var downswipe = Hammer(canvas).on("dragdown", function(event){
-    	moveQ.push({x:1,y:0});
+    	moveQ.push({x:0,y:1});
     	alert('you done downdrag!!!');
     });
     	
-    
-
 
     var ctx = canvas.getContext("2d");
-    
-    
-    /*
-      When the player swipes the screen a certain way, it will add the moves to a move Queue.
-      I think this is necessary because in Snake, you want to do a lot of fast sequential moves.
-     */
-
-    // Event listeners for canvas...
-    $(canvas).on("mousedown mousemove touchstart touchmove touchend", function(evt){
-        doSomething(evt, moveQ)
-    })
-
-    var Grid = {};
+   
+ 	var Grid = {};
     Grid.width = windowW/cell_dim;
     Grid.height = windowH/cell_dim;
     
@@ -106,20 +100,6 @@ $(document).ready(function(){
     // go go go
     animationLoop();
 });
-
-function doSomething(event, moveQ) {
-    // based on the event attributes, we should add a certain move to the moveQ
-
-    var element = document.getElementById('test_el');
-    // var hammertime = Hammer(element).on("tap", function, event);{
-    //  alert('YOU DONE TAPPED!');
-    // });
-    
-    console.log("did something");
-	
-	console.log("did something");
-
-}
 
 function changedir(direction, moveQ){
     moveQ.push(direction)
@@ -188,6 +168,3 @@ var clearCanvas = function(ctx) {
     ctx.fillRect(0,0,999999,999999);
 };
 
-$('body').bind("touchmove", {}, function(event){
-  event.preventDefault();
-});
