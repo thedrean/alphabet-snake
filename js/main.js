@@ -27,6 +27,8 @@ $(document).ready(function(){
 	var canvas = document.getElementById("canvas");
 	var rightswipe = Hammer(canvas).on("dragright", function(event){
     	moveQ.push({x:1,y:0});
+    	var sound = new Audio('Swoosh03.mp3');
+    	sound.play();
     	alert('you done rightdrag!');
     });
     var leftswipe = Hammer(canvas).on("dragleft", function(event){
