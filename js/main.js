@@ -8,30 +8,37 @@ $(document).ready(function(){
 		height: windowH,
 		width: windowW
 	});
+
+	var canvas = document.getElementById("canvas");
+	var ctx = canvas.getContext("2d");
+
+	// Event listeners for canvas...
+	canvas.addEventListener("mousedown", doSomething);
+    canvas.addEventListener("mousemove", doSomething);
+    canvas.addEventListener("touchstart", doSomething);
+    canvas.addEventListener("touchmove", doSomething);
+    canvas.addEventListener("touchend", doSomething);
+
 	
 	var Grid = {};
     Grid.width = windowW/cell_dim;
     Grid.height = windowH/cell_dim;
-    DrawLine();
+    DrawLine(ctx);
 
 });
-function DrawLine(){
-var c = document.getElementById("canvas");
-var ctx = c.getContext("2d");
-ctx.moveTo(0,0);
-ctx.lineTo(0, 768);
-ctx.moveTo(0,0);
-ctx.lineTo(1024, 0);
-ctx.moveTo(1024,0);
-ctx.lineTo(1024, 768);
-ctx.moveTo(1024,768);
-ctx.lineTo(0, 768);
+function DrawLine(ctx){
+	ctx.moveTo(0,0);
+	ctx.lineTo(0, 768);
+	ctx.moveTo(0,0);
+	ctx.lineTo(1024, 0);
+	ctx.moveTo(1024,0);
+	ctx.lineTo(1024, 768);
+	ctx.moveTo(1024,768);
+	ctx.lineTo(0, 768);
 
-ctx.stroke();
+	ctx.stroke();
 }
 
-var a= 100;
-
-
-// git add
-
+function doSomething() {
+	console.log("did something");
+}
