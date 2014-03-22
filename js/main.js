@@ -47,7 +47,6 @@ $(document).ready(function(){
         step(Snake, Grid, moveQ)
         drawSnake(ctx, Snake);
         requestAnimFrame(animationLoop);
-        render();
     }
 
     drawSnake(ctx, Snake);
@@ -106,7 +105,9 @@ function step(snake, grid, moveQ){
         
         tail = {x:head.x+direction.x, y:head.y+direction.y}
         snake.body.unshift(tail)
-        
+
+        if (!grid[tail.x])
+            grid[tail.x] = {}
         grid[tail.x][tail.y] = "snake"
     }
 }
