@@ -1,11 +1,15 @@
 var cell_dim = 64               // cells are squares, only need one dimension
 $(document).ready(function(){
-	$("#canvas").height = $(window).height();
-	$("#canvas").width = $(window).width();
+	
+	var windowH = $(window).height();
+	var windowW = $(window).width();
+
+	$("#canvas").height = windowH;
+	$("#canvas").width = windowW;
 	
 	var Grid = {};
-    Grid.width = $(window).width()/cell_dim
-    Grid.height = $(window).height()/cell_dim
+    Grid.width = windowW/cell_dim;
+    Grid.height = windowH/cell_dim;
 
 });
 
