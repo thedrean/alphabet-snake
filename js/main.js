@@ -10,6 +10,21 @@ $(document).ready(function(){
 	var Grid = {};
     Grid.width = windowW/cell_dim;
     Grid.height = windowH/cell_dim;
+    DrawLine();
 
 });
+function DrawLine(){
+var c = document.getElementById("canvas");
+var ctx = c.getContext("2d");
+ctx.moveTo(0,0);
+ctx.lineTo(0, 768);
+ctx.moveTo(0,0);
+ctx.lineTo(1024, 0);
+ctx.moveTo(1024,0);
+ctx.lineTo(1024, 768);
+ctx.moveTo(1024,768);
+ctx.lineTo(0, 768);
+
+ctx.stroke();
+}
 
