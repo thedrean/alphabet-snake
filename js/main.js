@@ -61,7 +61,6 @@ $(document).ready(function(){
     document.onkeydown = checkKey;
     function checkKey(e) {
     	e = e || window.event;
-    	console.log('hi');
     	switch(e.keyCode) {
     		case 39: //right
     			moveQ.push({x:1,y:0});
@@ -96,11 +95,11 @@ $(document).ready(function(){
 			x: randX,
 			y: randY
 		});
-		Grid[randX] = {randY:"letter"};
+		Grid[randX] = {};
+		Grid[randX][randY] = "letter";
 	}
 
-
-    
+  
     var last = Date.now()
     var FPS = 4
     var animframeid
@@ -131,6 +130,7 @@ function changedir(direction, moveQ) {
 }*/
 
 function step(snake, grid) {
+    console.log('steppin');
     if (moveQ[0]) {
         snake.direction = moveQ[0]
         moveQ = moveQ.slice(1)
@@ -142,10 +142,9 @@ function step(snake, grid) {
         ;
     else{
         // You lose/game over or whatever
-        alert("Game over try again etc etc")
+        console.log("Game over try again etc etc")
         return true
     }
-        
     if (grid[newhead.x] && grid[newhead.x][newhead.y]){
         var obj = grid[newhead.x][newhead.y];
         if (obj == "letter"){
@@ -155,7 +154,7 @@ function step(snake, grid) {
             alert("Game over try again etc etc")
             return true
         }
-    }else{
+    } else {
         var head = snake.body[0]
         var tail = snake.body.pop()
         
