@@ -31,25 +31,22 @@ $(document).ready(function(){
      */
 	var moveQ = []
 
-    var canvas = document.getElementById("canvas");
-    var rightswipe = Hammer(canvas).on("dragright", function(event){
-        moveQ.push({x:1,y:0});
-        alert('you done rightdrag!');
+	var canvas = document.getElementById("canvas");
+	var rightswipe = Hammer(canvas).on("dragright", function(event){
+    	moveQ.push({x:1,y:0});
+    	console.log('you done rightdrag!');
     });
     var leftswipe = Hammer(canvas).on("dragleft", function(event){
-        alert('you done leftdrag!!!!');
-        moveQ.push({x:1,y:0});
-        
-    	alert('you done leftdrag!!!!');
+    	console.log('you done leftdrag!!!!');
     	moveQ.push({x:-1,y:0});
     });
     var upswipe = Hammer(canvas).on("dragup", function(event){
     	moveQ.push({x:0,y:-1});
-    	alert('you done updrag!!');
+    	console.log('you done updrag!!');
     });
     var downswipe = Hammer(canvas).on("dragdown", function(event){
     	moveQ.push({x:0,y:1});
-    	alert('you done downdrag!!!');
+    	console.log('you done downdrag!!!');
     });
     	
 
@@ -100,18 +97,18 @@ $(document).ready(function(){
     // go go go
     animationLoop();
 });
-
-function changedir(direction, moveQ){
+/*
+function changedir(direction, moveQ) {
     moveQ.push(direction)
-}
+}*/
 
-function step(snake, grid, moveQ){
-    if (moveQ[0]){
-        direction = moveQ[0]
+function step(snake, grid, moveQ) {
+    if (moveQ[0]) {
+        snake.direction = moveQ[0]
         moveQ = moveQ.slice(1)
-    }else
-        direction = snake.direction
-    var newhead = {x: snake.body[0].x+direction.x, y:snake.body[0].y+direction.y}
+    }// else
+     //   direction = snake.direction
+    var newhead = {x: snake.body[0].x+snake.direction.x, y:snake.body[0].y+snake.direction.y}
     
     if (newhead.x >= 0 && newhead.x < grid.width && newhead.y >= 0 && newhead.y < grid.height)
         ;
@@ -136,7 +133,7 @@ function step(snake, grid, moveQ){
         
         grid[tail.x][tail.y] = undefined
         
-        tail = {x:head.x+direction.x, y:head.y+direction.y}
+        tail = {x:head.x+snake.direction.x, y:head.y+snake.direction.y}
         snake.body.unshift(tail)
 
         if (!grid[tail.x])
