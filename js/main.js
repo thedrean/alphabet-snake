@@ -89,14 +89,7 @@ $(document).ready(function(){
 
 	var Letters = [];
 	for (var i = 0; i < LETTERNUM; i ++) {
-		randX = Math.floor(Math.random()*(windowW/cell_dim));
-		randY = Math.floor(Math.random()*(windowH/cell_dim));
-		Letters.push({
-			x: randX,
-			y: randY
-		});
-		Grid[randX] = {};
-		Grid[randX][randY] = "letter";
+        generateLetter(Letters, Grid)
 	}
 
   
@@ -128,6 +121,18 @@ $(document).ready(function(){
 function changedir(direction, moveQ) {
     moveQ.push(direction)
 }*/
+
+function generateLetter(Letters, Grid){
+    var randX = Math.floor(Math.random()*(Grid.width));
+	var randY = Math.floor(Math.random()*(Grid.height));
+	Letters.push({
+		x: randX,
+		y: randY
+	});
+    if (!Grid[randX])
+	    Grid[randX] = {};
+	Grid[randX][randY] = "letter";
+}
 
 function step(snake, grid) {
     console.log('steppin');
