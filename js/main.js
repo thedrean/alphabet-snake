@@ -98,7 +98,7 @@ $(document).ready(function(){
     var animframeid
     function animationLoop(){
         if (Date.now() - last >= 1000/FPS){
-            var gameover = step(Snake, Grid)
+            var gameover = step(Snake, Grid, Letters)
             clearCanvas(ctx)
             drawSnake(ctx, Snake);
             drawLetters(ctx, Letters);
@@ -134,7 +134,7 @@ function generateLetter(Letters, Grid){
 	Grid[randX][randY] = "letter";
 }
 
-function step(snake, grid) {
+function step(snake, grid, Letters) {
     console.log('steppin');
     if (moveQ[0]) {
         snake.direction = moveQ[0]
@@ -153,7 +153,20 @@ function step(snake, grid) {
     if (grid[newhead.x] && grid[newhead.x][newhead.y]){
         var obj = grid[newhead.x][newhead.y];
         if (obj == "letter"){
-            // eat it
+            snake.body.unshift(newhead)
+            grid[newhead.x][newhead.y] = "snake"
+            for(var i=0; i<Letters.length; i++){
+                var l = Letters[i]
+                if (l.x == newhead.x && l.y == newhead.y){
+                    var tmpary = Letters.slice(0, i).concat(Letters.slice(i+1))
+                    Letters.pop()
+                    tmpary.forEach(function(el, ind){
+                        Letters[ind] = el // medium hacky, probs not the best way to do this
+                    })
+                    generateLetter(Letters, grid)
+                    break
+                }
+            }
         }else{
             // You lose
             alert("Game over try again etc etc")
