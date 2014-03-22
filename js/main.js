@@ -11,8 +11,8 @@ window.requestAnimFrame = (function(){
 var cell_dim = 64;				// cells are squares, only need one dimension
 var LETTERNUM = 3;				// magic number for now on number of letters
 var moveQ = []					// makin moveQ global cuz fuckit
-var sound = new Audio('../sounds/Swoosh03.mp3'); //swooshing audio for swiping
-	
+var swoosh = "../sounds/Swoosh03.mp3";
+
 $(document).ready(function(){
 
 	$('body').bind("touchmove", {}, function(event){
@@ -35,26 +35,19 @@ $(document).ready(function(){
      */
 	var rightswipe = Hammer(canvas).on("swiperight", function(event){
     	moveQ.push({x:1,y:0});
-    	sound.play();
-    	console.log('you done rightswipe!');
-    	console.log(moveQ);
+    	playSound(swoosh);
     });
     var leftswipe = Hammer(canvas).on("swipeleft", function(event){
-    	console.log('you done leftswipe!!!!');
-    	sound.play();
     	moveQ.push({x:-1,y:0});
-    	console.log(moveQ);
+    	playSound(swoosh);
     });
     var upswipe = Hammer(canvas).on("swipeup", function(event){
     	moveQ.push({x:0,y:-1});
-    	sound.play();
-    	console.log('you done upswipe!!');
+    	playSound(swoosh);
     });
     var downswipe = Hammer(canvas).on("swipedown", function(event){
     	moveQ.push({x:0,y:1});
-    	console.log('you done downswipe!!!');
-    	console.log(moveQ);
-    	sound.play();
+    	playSound(swoosh);
     });
 
     /* Adding arrowkey functionality for testing on PC */
@@ -75,6 +68,7 @@ $(document).ready(function(){
     			moveQ.push({x:0,y:1});
     			break;
     	}
+    	playSound(swoosh);
     }
         	
 	var ctx = canvas.getContext("2d");
