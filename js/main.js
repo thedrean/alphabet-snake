@@ -1,3 +1,5 @@
+var cell_dim = 64               // cells are squares, only need one dimension
+
 // Support older versions of requestAnimationFrame
 window.requestAnimFrame = (function(){
   return  window.requestAnimationFrame       ||
@@ -37,6 +39,19 @@ $(document).ready(function(){
 
 
 	var ctx = canvas.getContext("2d");
+
+	// Event listeners for canvas...
+	canvas.addEventListener("mousedown", doSomething);
+    canvas.addEventListener("mousemove", doSomething);
+    canvas.addEventListener("touchstart", doSomething);
+    canvas.addEventListener("touchmove", doSomething);
+    canvas.addEventListener("touchend", doSomething);
+
+	
+	var Grid = {};
+    Grid.width = windowW/cell_dim;
+    Grid.height = windowH/cell_dim;
+    DrawLine(ctx);
     
     
     /*
@@ -56,6 +71,32 @@ $(document).ready(function(){
     var Snake = {body:[{x:0, y:0}], 
                  direction:{x:1, y:0}}
     Grid[0] = {0:"snake"}
+    function animationLoop(){
+        step(Snake, Grid)
+    }
+    
+
+});
+function DrawLine(ctx){
+	ctx.moveTo(0,0);
+	ctx.lineTo(0, 768);
+	ctx.moveTo(0,0);
+	ctx.lineTo(1024, 0);
+	ctx.moveTo(1024,0);
+	ctx.lineTo(1024, 768);
+	ctx.moveTo(1024,768);
+	ctx.lineTo(0, 768);
+
+	ctx.stroke();
+}
+
+function doSomething() {
+	console.log("did something");
+}
+
+
+
+function step(snake, grid){
 
 	var Letters = [];
 	for (var i = 0; i < LETTERNUM; i ++) {
@@ -149,6 +190,7 @@ function step(snake, grid, moveQ){
             grid[tail.x] = {}
         grid[tail.x][tail.y] = "snake"
     }
+}
 }
 
 function drawSnake(ctx, snake) {
