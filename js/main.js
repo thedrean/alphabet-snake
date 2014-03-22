@@ -11,13 +11,18 @@ $(document).ready(function(){
 
 	var canvas = document.getElementById("canvas");
 	var ctx = canvas.getContext("2d");
+    
+    var moveQ = []              // 
 
 	// Event listeners for canvas...
-	canvas.addEventListener("mousedown", doSomething);
-    canvas.addEventListener("mousemove", doSomething);
-    canvas.addEventListener("touchstart", doSomething);
-    canvas.addEventListener("touchmove", doSomething);
-    canvas.addEventListener("touchend", doSomething);
+    $(canvas).on("mousedown mousemove touchstart touchmove touchend", function(evt){
+        doSomething(evt, moveQ)
+    })
+	// canvas.addEventListener("mousedown", doSomething);
+    // canvas.addEventListener("mousemove", doSomething);
+    // canvas.addEventListener("touchstart", doSomething);
+    // canvas.addEventListener("touchmove", doSomething);
+    // canvas.addEventListener("touchend", doSomething);
 
 	
 	var Grid = {};
@@ -29,7 +34,8 @@ $(document).ready(function(){
                  direction:{x:1, y:0}}
     Grid[0] = {0:"snake"}
     function animationLoop(){
-        step(Snake, Grid)
+        step(Snake, Grid, moveQ)
+        
     }
     
 
@@ -47,13 +53,21 @@ function DrawLine(ctx){
 	ctx.stroke();
 }
 
-function doSomething() {
+function doSomething(evt, moveQ) {
+    // based on the event attributes, we should add a certain move to the moveQ
 	console.log("did something");
 }
 
+function changedir(direction, moveQ){
+    moveQ.push(direction)
+}
 
-
-function step(snake, grid){
+function step(snake, grid, moveQ){
+    if (moveQ[0]){
+        direction = moveQ[0]
+        moveQ = moveQ.slice(1)
+    }else
+        direction = snake.direction
     var newhead = {x: snake.body[0].x+direction.x, y:snake.body[0].y+direction.y}
     
     if (newhead.x >= 0 && newhead.x < grid.width && newhead.y >= 0 && newhead.y < grid.height)
