@@ -13,6 +13,10 @@ var LETTERNUM = 3;				// magic number for now on number of letters
 
 $(document).ready(function(){
 
+	$('body').bind("touchmove", {}, function(event){
+  		event.preventDefault();
+	});
+
 	var windowH = $(window).height();
 	var windowW = $(window).width();
 
@@ -31,20 +35,17 @@ $(document).ready(function(){
     });
     var leftswipe = Hammer(canvas).on("dragleft", function(event){
     	alert('you done leftdrag!!!!');
-    	moveQ.push({x:1,y:0});
+    	moveQ.push({x:-1,y:0});
     });
     var upswipe = Hammer(canvas).on("dragup", function(event){
-    	moveQ.push({x:1,y:0});
+    	moveQ.push({x:0,y:-1});
     	alert('you done updrag!!');
     });
     var downswipe = Hammer(canvas).on("dragdown", function(event){
-    	moveQ.push({x:1,y:0});
+    	moveQ.push({x:0,y:1});
     	alert('you done downdrag!!!');
     });
     	
-    
-
-
 	var ctx = canvas.getContext("2d");
     
     
@@ -107,7 +108,6 @@ $(document).ready(function(){
 function doSomething(event, moveQ) {
     // based on the event attributes, we should add a certain move to the moveQ
 
-	
 	console.log("did something");
 
 }
@@ -179,6 +179,3 @@ var clearCanvas = function(ctx) {
 	ctx.fillRect(0,0,999999,999999);
 };
 
-$('body').bind("touchmove", {}, function(event){
-  event.preventDefault();
-});
