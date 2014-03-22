@@ -41,10 +41,16 @@ $(document).ready(function(){
     var Snake = {body:[{x:0, y:0}], 
                  direction:{x:1, y:0}}
     Grid[0] = {0:"snake"}
-
+    
+    var last = Date.now()
+    var FPS = 4
     function animationLoop(){
-        step(Snake, Grid, moveQ)
-        drawSnake(ctx, Snake);
+        if (Date.now() - last >= 1000/FPS){
+            step(Snake, Grid, moveQ)
+            drawSnake(ctx, Snake);
+            
+            last = Date.now()
+        }
         requestAnimFrame(animationLoop);
     }
 
