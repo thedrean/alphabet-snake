@@ -44,15 +44,21 @@ $(document).ready(function(){
     });
     var leftswipe = Hammer(canvas).on("swipeleft", function(event){
     	console.log('you done leftswipe!!!!');
+    	var sound = new Audio('Swoosh03.mp3');
+    	sound.play();
     	moveQ.push({x:-1,y:0});
     });
     var upswipe = Hammer(canvas).on("swipeup", function(event){
     	moveQ.push({x:0,y:-1});
     	console.log('you done upswipe!!');
+    	var sound = new Audio('Swoosh03.mp3');
+    	sound.play();
     });
     var downswipe = Hammer(canvas).on("swipedown", function(event){
     	moveQ.push({x:0,y:1});
     	console.log('you done downswipe!!!');
+    	var sound = new Audio('Swoosh03.mp3');
+    	sound.play();
     });
     	
 	var ctx = canvas.getContext("2d");
