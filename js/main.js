@@ -30,10 +30,25 @@ $(document).ready(function(){
         alert('you done rightdrag!');
     });
     var leftswipe = Hammer(canvas).on("dragleft", function(event){
+<<<<<<< HEAD
         alert('you done leftdrag!!!!');
         moveQ.push({x:1,y:0});
         
+=======
+    	alert('you done leftdrag!!!!');
+    	moveQ.push({x:1,y:0});
+>>>>>>> master
     });
+    var upswipe = Hammer(canvas).on("dragup", function(event){
+    	moveQ.push({x:1,y:0});
+    	alert('you done updrag!!');
+    });
+    var downswipe = Hammer(canvas).on("dragdown", function(event){
+    	moveQ.push({x:1,y:0});
+    	alert('you done downdrag!!!');
+    });
+    	
+    
 
 
     var ctx = canvas.getContext("2d");
@@ -98,12 +113,17 @@ $(document).ready(function(){
 function doSomething(event, moveQ) {
     // based on the event attributes, we should add a certain move to the moveQ
 
+<<<<<<< HEAD
     var element = document.getElementById('test_el');
     // var hammertime = Hammer(element).on("tap", function, event);{
     //  alert('YOU DONE TAPPED!');
     // });
     
     console.log("did something");
+=======
+	
+	console.log("did something");
+>>>>>>> master
 
 }
 
@@ -173,3 +193,7 @@ var clearCanvas = function(ctx) {
     ctx.fillStyle="red";
     ctx.fillRect(0,0,999999,999999);
 };
+
+$('body').bind("touchmove", {}, function(event){
+  event.preventDefault();
+});
