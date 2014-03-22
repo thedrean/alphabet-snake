@@ -10,7 +10,8 @@ window.requestAnimFrame = (function(){
 
 var cell_dim = 64;				// cells are squares, only need one dimension
 var LETTERNUM = 3;				// magic number for now on number of letters
-
+var moveQ = []					// makin moveQ global cuz fuckit
+	
 $(document).ready(function(){
 
 	$('body').bind("touchmove", {}, function(event){
@@ -30,35 +31,36 @@ $(document).ready(function(){
       When the player swipes the screen a certain way, it will add the moves to a move Queue.
       I think this is necessary because in Snake, you want to do a lot of fast sequential moves.
      */
-	var moveQ = []
-
 	var canvas = document.getElementById("canvas");
 	var rightswipe = Hammer(canvas).on("swiperight", function(event){
     	moveQ.push({x:1,y:0});
-
     	var sound = new Audio('Swoosh03.mp3');
     	sound.play();
-    	
-    	console.log('you done rightdrag!');
-
+    	console.log('you done rightswipe!');
+    	console.log(moveQ);
     });
     var leftswipe = Hammer(canvas).on("swipeleft", function(event){
     	console.log('you done leftswipe!!!!');
     	var sound = new Audio('Swoosh03.mp3');
     	sound.play();
     	moveQ.push({x:-1,y:0});
+    	console.log(moveQ);
     });
     var upswipe = Hammer(canvas).on("swipeup", function(event){
     	moveQ.push({x:0,y:-1});
     	console.log('you done upswipe!!');
-    	var sound = new Audio('Swoosh03.mp3');
-    	sound.play();
+
     });
     var downswipe = Hammer(canvas).on("swipedown", function(event){
     	moveQ.push({x:0,y:1});
     	console.log('you done downswipe!!!');
-    	var sound = new Audio('Swoosh03.mp3');
-    	sound.play();
+    	console.log(moveQ);
+    });
+    var downswipe = Hammer(canvas).on("swipedown", function(event){
+    	moveQ.push({x:0,y:1});
+    	console.log('you done downswipe!!!');    	
+    	console.log(moveQ);
+
     });
     	
 	var ctx = canvas.getContext("2d");
@@ -89,7 +91,7 @@ $(document).ready(function(){
     var animframeid
     function animationLoop(){
         if (Date.now() - last >= 1000/FPS){
-            var gameover = step(Snake, Grid, moveQ)
+            var gameover = step(Snake, Grid)
             clearCanvas(ctx)
             drawSnake(ctx, Snake);
             drawLetters(ctx, Letters);
@@ -113,7 +115,7 @@ function changedir(direction, moveQ) {
     moveQ.push(direction)
 }*/
 
-function step(snake, grid, moveQ) {
+function step(snake, grid) {
     if (moveQ[0]) {
         snake.direction = moveQ[0]
         moveQ = moveQ.slice(1)
