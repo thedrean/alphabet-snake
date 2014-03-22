@@ -14,8 +14,8 @@ var LETTERNUM = 3;              // magic number for now on number of letters
 var cell_dim = 64;				// cells are squares, only need one dimension
 var LETTERNUM = 3;				// magic number for now on number of letters
 var moveQ = []					// makin moveQ global cuz fuckit
-var sound = new Audio('../sounds/Swoosh03.mp3'); //swooshing audio for swiping
-	
+var swoosh = "../sounds/Swoosh03.mp3";
+
 $(document).ready(function(){
 
 	$('body').bind("touchmove", {}, function(event){
@@ -34,39 +34,44 @@ $(document).ready(function(){
       When the player swipes the screen a certain way, it will add the moves to a move Queue.
       I think this is necessary because in Snake, you want to do a lot of fast sequential moves.
      */
-	var canvas = document.getElementById("canvas");
 	var rightswipe = Hammer(canvas).on("swiperight", function(event){
     	moveQ.push({x:1,y:0});
-    	sound.play();
-    	console.log('you done rightswipe!');
-    	console.log(moveQ);
+    	playSound(swoosh);
     });
     var leftswipe = Hammer(canvas).on("swipeleft", function(event){
-    	console.log('you done leftswipe!!!!');
-    	sound.play();
     	moveQ.push({x:-1,y:0});
-    	console.log(moveQ);
+    	playSound(swoosh);
     });
     var upswipe = Hammer(canvas).on("swipeup", function(event){
     	moveQ.push({x:0,y:-1});
-    	sound.play();
-    	console.log('you done upswipe!!');
+    	playSound(swoosh);
     });
     var downswipe = Hammer(canvas).on("swipedown", function(event){
     	moveQ.push({x:0,y:1});
-    	console.log('you done downswipe!!!');
-    	console.log(moveQ);
-    	sound.play();
+    	playSound(swoosh);
     });
-    var downswipe = Hammer(canvas).on("swipedown", function(event){
-    	moveQ.push({x:0,y:1});
-    	console.log('you done downswipe!!!');    	
-    	console.log(moveQ);
-    	sound.play();
 
-    });
-    	
-
+    /* Adding arrowkey functionality for testing on PC */
+    document.onkeydown = checkKey;
+    function checkKey(e) {
+    	e = e || window.event;
+    	switch(e.keyCode) {
+    		case 39: //right
+    			moveQ.push({x:1,y:0});
+    			break;
+    		case 37: //left
+    			moveQ.push({x:-1,y:0});
+    			break;
+    		case 38: //up
+    			moveQ.push({x:0,y:-1});
+    			break;
+    		case 40: //down
+    			moveQ.push({x:0,y:1});
+    			break;
+    	}
+    	playSound(swoosh);
+    }
+        	
     var ctx = canvas.getContext("2d");
    
  	var Grid = {};
@@ -77,25 +82,17 @@ $(document).ready(function(){
                  direction:{x:1, y:0}}
     Grid[0] = {0:"snake"}
 
-    var Letters = [];
-    for (var i = 0; i < LETTERNUM; i ++) {
-        randX = Math.floor(Math.random()*(windowW/cell_dim));
-        randY = Math.floor(Math.random()*(windowH/cell_dim));
-        Letters.push({
-            x: randX,
-            y: randY
-        });
-        Grid[randX] = {randY:"letter"};
-    }
-
-
-    
+	var Letters = [];
+	for (var i = 0; i < LETTERNUM; i ++) {
+        generateLetter(Letters, Grid)
+	}
+  
     var last = Date.now()
     var FPS = 4
     var animframeid
     function animationLoop(){
         if (Date.now() - last >= 1000/FPS){
-            var gameover = step(Snake, Grid)
+            var gameover = step(Snake, Grid, Letters)
             clearCanvas(ctx)
             drawSnake(ctx, Snake);
             drawLetters(ctx, Letters);
@@ -119,7 +116,20 @@ function changedir(direction, moveQ) {
     moveQ.push(direction)
 }*/
 
-function step(snake, grid) {
+function generateLetter(Letters, Grid){
+    var randX = Math.floor(Math.random()*(Grid.width));
+	var randY = Math.floor(Math.random()*(Grid.height));
+	Letters.push({
+		x: randX,
+		y: randY
+	});
+    if (!Grid[randX])
+	    Grid[randX] = {};
+	Grid[randX][randY] = "letter";
+}
+
+function step(snake, grid, Letters) {
+    console.log('steppin');
     if (moveQ[0]) {
         snake.direction = moveQ[0]
         moveQ = moveQ.slice(1)
@@ -131,20 +141,32 @@ function step(snake, grid) {
         ;
     else{
         // You lose/game over or whatever
-        alert("Game over try again etc etc")
+        console.log("Game over try again etc etc")
         return true
     }
-        
     if (grid[newhead.x] && grid[newhead.x][newhead.y]){
         var obj = grid[newhead.x][newhead.y];
         if (obj == "letter"){
-            // eat it
+            snake.body.unshift(newhead)
+            grid[newhead.x][newhead.y] = "snake"
+            for(var i=0; i<Letters.length; i++){
+                var l = Letters[i]
+                if (l.x == newhead.x && l.y == newhead.y){
+                    var tmpary = Letters.slice(0, i).concat(Letters.slice(i+1))
+                    Letters.pop()
+                    tmpary.forEach(function(el, ind){
+                        Letters[ind] = el // medium hacky, probs not the best way to do this
+                    })
+                    generateLetter(Letters, grid)
+                    break
+                }
+            }
         }else{
             // You lose
             alert("Game over try again etc etc")
             return true
         }
-    }else{
+    } else {
         var head = snake.body[0]
         var tail = snake.body.pop()
         
