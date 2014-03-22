@@ -9,10 +9,24 @@ $(document).ready(function(){
 		width: windowW
 	});
 
+
+	var moveQ = []
+
 	var canvas = document.getElementById("canvas");
+	var rightswipe = Hammer(canvas).on("dragright", function(event){
+    	moveQ.push({x:1,y:0});
+    	alert('you done rightdrag!');
+    });
+    var leftswipe = Hammer(canvas).on("dragleft", function(event){
+    	alert('you done leftdrag!!!!');
+    	moveQ.push({x:1,y:0});
+    	
+    });
+
+
 	var ctx = canvas.getContext("2d");
     
-    var moveQ = []
+    
     /*
       When the player swipes the screen a certain way, it will add the moves to a move Queue.
       I think this is necessary because in Snake, you want to do a lot of fast sequential moves.
@@ -52,9 +66,16 @@ function DrawLine(ctx){
 	ctx.stroke();
 }
 
-function doSomething(evt, moveQ) {
+function doSomething(event, moveQ) {
     // based on the event attributes, we should add a certain move to the moveQ
+
+    var element = document.getElementById('test_el');
+    // var hammertime = Hammer(element).on("tap", function, event);{
+    // 	alert('YOU DONE TAPPED!');
+    // });
+	
 	console.log("did something");
+
 }
 
 function changedir(direction, moveQ){
