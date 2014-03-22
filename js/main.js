@@ -8,6 +8,9 @@ window.requestAnimFrame = (function(){
           };
 })();
 
+var cell_dim = 64;              // cells are squares, only need one dimension
+var LETTERNUM = 3;              // magic number for now on number of letters
+
 var cell_dim = 64;				// cells are squares, only need one dimension
 var LETTERNUM = 3;				// magic number for now on number of letters
 var moveQ = []					// makin moveQ global cuz fuckit
