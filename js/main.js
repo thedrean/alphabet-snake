@@ -37,7 +37,6 @@ $(document).ready(function(){
 	var Grid = {};
     Grid.width = windowW/cell_dim;
     Grid.height = windowH/cell_dim;
-    DrawLine(ctx);
     
     var Snake = {body:[{x:0, y:0}], 
                  direction:{x:1, y:0}}
@@ -54,19 +53,6 @@ $(document).ready(function(){
     // go go go
     animationLoop();
 });
-
-function DrawLine(ctx){
-	ctx.moveTo(0,0);
-	ctx.lineTo(0, 768);
-	ctx.moveTo(0,0);
-	ctx.lineTo(1024, 0);
-	ctx.moveTo(1024,0);
-	ctx.lineTo(1024, 768);
-	ctx.moveTo(1024,768);
-	ctx.lineTo(0, 768);
-
-	ctx.stroke();
-}
 
 function doSomething(evt, moveQ) {
     // based on the event attributes, we should add a certain move to the moveQ
