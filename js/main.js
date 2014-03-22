@@ -105,6 +105,7 @@ function step(snake, grid, moveQ){
 }
 
 function drawSnake(ctx, snake) {
+	clearCanvas(ctx);
 	ctx.fillStyle = "black";
 	for (var i = 0; i < snake.body.length; i ++) {
 		posX = snake.body[i].x * cell_dim;
@@ -114,6 +115,6 @@ function drawSnake(ctx, snake) {
 }
 
 var clearCanvas = function(ctx) {
-	ctx.fillStyle="blue";
+	ctx.fillStyle="red";
 	ctx.fillRect(0,0,999999,999999);
 };
