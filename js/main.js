@@ -1,4 +1,15 @@
+// Support older versions of requestAnimationFrame
+window.requestAnimFrame = (function(){
+  return  window.requestAnimationFrame       ||
+          window.webkitRequestAnimationFrame ||
+          window.mozRequestAnimationFrame    ||
+          function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+          };
+})();
+
 var cell_dim = 64               // cells are squares, only need one dimension
+
 $(document).ready(function(){
 
 	var windowH = $(window).height();
@@ -23,7 +34,6 @@ $(document).ready(function(){
         doSomething(evt, moveQ)
     })
 
-	
 	var Grid = {};
     Grid.width = windowW/cell_dim;
     Grid.height = windowH/cell_dim;
@@ -32,13 +42,19 @@ $(document).ready(function(){
     var Snake = {body:[{x:0, y:0}], 
                  direction:{x:1, y:0}}
     Grid[0] = {0:"snake"}
+
     function animationLoop(){
         step(Snake, Grid, moveQ)
-        
+        drawSnake(ctx, Snake);
+        requestAnimFrame(animationLoop);
+        render();
     }
-    
 
+    drawSnake(ctx, Snake);
+    // go go go
+    animationLoop();
 });
+
 function DrawLine(ctx){
 	ctx.moveTo(0,0);
 	ctx.lineTo(0, 768);
@@ -94,3 +110,17 @@ function step(snake, grid, moveQ){
         grid[tail.x][tail.y] = "snake"
     }
 }
+
+function drawSnake(ctx, snake) {
+	ctx.fillStyle = "black";
+	for (var i = 0; i < snake.body.length; i ++) {
+		posX = snake.body[i].x * cell_dim;
+		posY = snake.body[i].y * cell_dim;
+		ctx.fillRect(posX, posY, cell_dim, cell_dim);
+	}
+}
+
+var clearCanvas = function(ctx) {
+	ctx.fillStyle="blue";
+	ctx.fillRect(0,0,999999,999999);
+};
