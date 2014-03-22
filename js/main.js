@@ -24,6 +24,14 @@ $(document).ready(function(){
     Grid.width = windowW/cell_dim;
     Grid.height = windowH/cell_dim;
     DrawLine(ctx);
+    
+    var Snake = {body:[{x:0, y:0}], 
+                 direction:{x:1, y:0}}
+    Grid[0] = {0:"snake"}
+    function animationLoop(){
+        step(Snake, Grid)
+    }
+    
 
 });
 function DrawLine(ctx){
@@ -43,8 +51,7 @@ function doSomething() {
 	console.log("did something");
 }
 
-var Snake = {body:[], 
-             direction:{x:1, y:0}}
+
 
 function step(snake, grid){
     var newhead = {x: snake.body[0].x+direction.x, y:snake.body[0].y+direction.y}
