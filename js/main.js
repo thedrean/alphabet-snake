@@ -27,12 +27,12 @@ $(document).ready(function(){
 		width: windowW
 	});
 
+	var canvas = document.getElementById("canvas");
         
     /*
       When the player swipes the screen a certain way, it will add the moves to a move Queue.
       I think this is necessary because in Snake, you want to do a lot of fast sequential moves.
      */
-	var canvas = document.getElementById("canvas");
 	var rightswipe = Hammer(canvas).on("swiperight", function(event){
     	moveQ.push({x:1,y:0});
     	sound.play();
@@ -56,14 +56,28 @@ $(document).ready(function(){
     	console.log(moveQ);
     	sound.play();
     });
-    var downswipe = Hammer(canvas).on("swipedown", function(event){
-    	moveQ.push({x:0,y:1});
-    	console.log('you done downswipe!!!');    	
-    	console.log(moveQ);
-    	sound.play();
 
-    });
-    	
+    /* Adding arrowkey functionality for testing on PC */
+    document.onkeydown = checkKey;
+    function checkKey(e) {
+    	e = e || window.event;
+    	console.log('hi');
+    	switch(e.keyCode) {
+    		case 39: //right
+    			moveQ.push({x:1,y:0});
+    			break;
+    		case 37: //left
+    			moveQ.push({x:-1,y:0});
+    			break;
+    		case 38: //up
+    			moveQ.push({x:0,y:-1});
+    			break;
+    		case 40: //down
+    			moveQ.push({x:0,y:1});
+    			break;
+    	}
+    }
+        	
 	var ctx = canvas.getContext("2d");
 
 	var Grid = {};
