@@ -35,14 +35,12 @@ $(document).ready(function(){
 	var canvas = document.getElementById("canvas");
 	var rightswipe = Hammer(canvas).on("swiperight", function(event){
     	moveQ.push({x:1,y:0});
-    	
     	sound.play();
     	console.log('you done rightswipe!');
     	console.log(moveQ);
     });
     var leftswipe = Hammer(canvas).on("swipeleft", function(event){
     	console.log('you done leftswipe!!!!');
-    	
     	sound.play();
     	moveQ.push({x:-1,y:0});
     	console.log(moveQ);
@@ -51,7 +49,6 @@ $(document).ready(function(){
     	moveQ.push({x:0,y:-1});
     	sound.play();
     	console.log('you done upswipe!!');
-
     });
     var downswipe = Hammer(canvas).on("swipedown", function(event){
     	moveQ.push({x:0,y:1});
