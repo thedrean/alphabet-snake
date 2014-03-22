@@ -44,14 +44,18 @@ $(document).ready(function(){
     
     var last = Date.now()
     var FPS = 4
+    var animframeid
     function animationLoop(){
         if (Date.now() - last >= 1000/FPS){
-            step(Snake, Grid, moveQ)
+            var gameover = step(Snake, Grid, moveQ)
             drawSnake(ctx, Snake);
-            
+            if (gameover){
+                cancelAnimationFrame(animframeid)
+                return
+            }
             last = Date.now()
         }
-        requestAnimFrame(animationLoop);
+        animframeid = requestAnimFrame(animationLoop);
     }
 
     drawSnake(ctx, Snake);
@@ -80,6 +84,8 @@ function step(snake, grid, moveQ){
         ;
     else{
         // You lose/game over or whatever
+        alert("Game over try again etc etc")
+        return true
     }
         
     if (grid[newhead.x] && grid[newhead.x][newhead.y]){
@@ -88,6 +94,8 @@ function step(snake, grid, moveQ){
             // eat it
         }else{
             // You lose
+            alert("Game over try again etc etc")
+            return true
         }
     }else{
         var head = snake.body[0]
