@@ -173,3 +173,7 @@ var clearCanvas = function(ctx) {
 	ctx.fillStyle="red";
 	ctx.fillRect(0,0,999999,999999);
 };
+
+$('body').bind("touchmove", {}, function(event){
+  event.preventDefault();
+});
