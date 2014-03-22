@@ -42,3 +42,35 @@ function DrawLine(ctx){
 function doSomething() {
 	console.log("did something");
 }
+
+var Snake = {body:[], 
+             direction:{x:1, y:0}}
+
+function step(snake, grid){
+    var newhead = {x: snake.body[0].x+direction.x, y:snake.body[0].y+direction.y}
+    
+    if (newhead.x >= 0 && newhead.x < grid.width && newhead.y >= 0 && newhead.y < grid.height)
+        ;
+    else{
+        // You lose/game over or whatever
+    }
+        
+    if (grid[newhead.x] && grid[newhead.x][newhead.y]){
+        var obj = grid[newhead.x][newhead.y];
+        if (obj == "letter"){
+            // eat it
+        }else{
+            // You lose
+        }
+    }else{
+        var head = snake.body[0]
+        var tail = snake.body.pop()
+        
+        grid[tail.x][tail.y] = undefined
+        
+        tail = {x:head.x+direction.x, y:head.y+direction.y}
+        snake.body.unshift(tail)
+        
+        grid[tail.x][tail.y] = "snake"
+    }
+}
