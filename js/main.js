@@ -13,6 +13,10 @@ var LETTERNUM = 3;				// magic number for now on number of letters
 
 $(document).ready(function(){
 
+	$('body').bind("touchmove", {}, function(event){
+  		event.preventDefault();
+	});
+
 	var windowH = $(window).height();
 	var windowW = $(window).width();
 
@@ -21,44 +25,37 @@ $(document).ready(function(){
 		width: windowW
 	});
 
-
-	var moveQ = []
-
-	var canvas = document.getElementById("canvas");
-	var rightswipe = Hammer(canvas).on("dragright", function(event){
-    	moveQ.push({x:1,y:0});
-    	var sound = new Audio('Swoosh03.mp3');
-    	sound.play();
-    	alert('you done rightdrag!');
-    });
-    var leftswipe = Hammer(canvas).on("dragleft", function(event){
-    	alert('you done leftdrag!!!!');
-    	moveQ.push({x:1,y:0});
-    });
-    var upswipe = Hammer(canvas).on("dragup", function(event){
-    	moveQ.push({x:1,y:0});
-    	alert('you done updrag!!');
-    });
-    var downswipe = Hammer(canvas).on("dragdown", function(event){
-    	moveQ.push({x:1,y:0});
-    	alert('you done downdrag!!!');
-    });
-    	
-    
-
-
-	var ctx = canvas.getContext("2d");
-    
-    
+        
     /*
       When the player swipes the screen a certain way, it will add the moves to a move Queue.
       I think this is necessary because in Snake, you want to do a lot of fast sequential moves.
      */
+	var moveQ = []
 
-	// Event listeners for canvas...
-    $(canvas).on("mousedown mousemove touchstart touchmove touchend", function(evt){
-        doSomething(evt, moveQ)
-    })
+	var canvas = document.getElementById("canvas");
+	var rightswipe = Hammer(canvas).on("swiperight", function(event){
+    	moveQ.push({x:1,y:0});
+
+    	var sound = new Audio('Swoosh03.mp3');
+    	sound.play();
+    	
+    	console.log('you done rightdrag!');
+
+    });
+    var leftswipe = Hammer(canvas).on("swipeleft", function(event){
+    	console.log('you done leftswipe!!!!');
+    	moveQ.push({x:-1,y:0});
+    });
+    var upswipe = Hammer(canvas).on("swipeup", function(event){
+    	moveQ.push({x:0,y:-1});
+    	console.log('you done upswipe!!');
+    });
+    var downswipe = Hammer(canvas).on("swipedown", function(event){
+    	moveQ.push({x:0,y:1});
+    	console.log('you done downswipe!!!');
+    });
+    	
+	var ctx = canvas.getContext("2d");
 
 	var Grid = {};
     Grid.width = windowW/cell_dim;
@@ -105,26 +102,18 @@ $(document).ready(function(){
     // go go go
     animationLoop();
 });
-
-function doSomething(event, moveQ) {
-    // based on the event attributes, we should add a certain move to the moveQ
-
-	
-	console.log("did something");
-
-}
-
-function changedir(direction, moveQ){
+/*
+function changedir(direction, moveQ) {
     moveQ.push(direction)
-}
+}*/
 
-function step(snake, grid, moveQ){
-    if (moveQ[0]){
-        direction = moveQ[0]
+function step(snake, grid, moveQ) {
+    if (moveQ[0]) {
+        snake.direction = moveQ[0]
         moveQ = moveQ.slice(1)
-    }else
-        direction = snake.direction
-    var newhead = {x: snake.body[0].x+direction.x, y:snake.body[0].y+direction.y}
+    }// else
+     //   direction = snake.direction
+    var newhead = {x: snake.body[0].x+snake.direction.x, y:snake.body[0].y+snake.direction.y}
     
     if (newhead.x >= 0 && newhead.x < grid.width && newhead.y >= 0 && newhead.y < grid.height)
         ;
@@ -149,7 +138,7 @@ function step(snake, grid, moveQ){
         
         grid[tail.x][tail.y] = undefined
         
-        tail = {x:head.x+direction.x, y:head.y+direction.y}
+        tail = {x:head.x+snake.direction.x, y:head.y+snake.direction.y}
         snake.body.unshift(tail)
 
         if (!grid[tail.x])
@@ -180,3 +169,4 @@ var clearCanvas = function(ctx) {
 	ctx.fillStyle="red";
 	ctx.fillRect(0,0,999999,999999);
 };
+
