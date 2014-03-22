@@ -32,21 +32,21 @@ $(document).ready(function(){
 	var moveQ = []
 
 	var canvas = document.getElementById("canvas");
-	var rightswipe = Hammer(canvas).on("dragright", function(event){
+	var rightswipe = Hammer(canvas).on("swiperight", function(event){
     	moveQ.push({x:1,y:0});
     	console.log('you done rightdrag!');
     });
-    var leftswipe = Hammer(canvas).on("dragleft", function(event){
-    	console.log('you done leftdrag!!!!');
+    var leftswipe = Hammer(canvas).on("swipeleft", function(event){
+    	console.log('you done leftswipe!!!!');
     	moveQ.push({x:-1,y:0});
     });
-    var upswipe = Hammer(canvas).on("dragup", function(event){
+    var upswipe = Hammer(canvas).on("swipeup", function(event){
     	moveQ.push({x:0,y:-1});
-    	console.log('you done updrag!!');
+    	console.log('you done upswipe!!');
     });
-    var downswipe = Hammer(canvas).on("dragdown", function(event){
+    var downswipe = Hammer(canvas).on("swipedown", function(event){
     	moveQ.push({x:0,y:1});
-    	console.log('you done downdrag!!!');
+    	console.log('you done downswipe!!!');
     });
     	
 
