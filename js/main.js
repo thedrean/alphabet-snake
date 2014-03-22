@@ -1,5 +1,3 @@
-var cell_dim = 64               // cells are squares, only need one dimension
-
 // Support older versions of requestAnimationFrame
 window.requestAnimFrame = (function(){
   return  window.requestAnimationFrame       ||
@@ -10,48 +8,35 @@ window.requestAnimFrame = (function(){
           };
 })();
 
-var cell_dim = 64;				// cells are squares, only need one dimension
-var LETTERNUM = 3;				// magic number for now on number of letters
+var cell_dim = 64;              // cells are squares, only need one dimension
+var LETTERNUM = 3;              // magic number for now on number of letters
 
 $(document).ready(function(){
 
-	var windowH = $(window).height();
-	var windowW = $(window).width();
+    var windowH = $(window).height();
+    var windowW = $(window).width();
 
-	$("#canvas").attr({
-		height: windowH,
-		width: windowW
-	});
+    $("#canvas").attr({
+        height: windowH,
+        width: windowW
+    });
 
 
-	var moveQ = []
+    var moveQ = []
 
-	var canvas = document.getElementById("canvas");
-	var rightswipe = Hammer(canvas).on("dragright", function(event){
-    	moveQ.push({x:1,y:0});
-    	alert('you done rightdrag!');
+    var canvas = document.getElementById("canvas");
+    var rightswipe = Hammer(canvas).on("dragright", function(event){
+        moveQ.push({x:1,y:0});
+        alert('you done rightdrag!');
     });
     var leftswipe = Hammer(canvas).on("dragleft", function(event){
-    	alert('you done leftdrag!!!!');
-    	moveQ.push({x:1,y:0});
-    	
+        alert('you done leftdrag!!!!');
+        moveQ.push({x:1,y:0});
+        
     });
 
 
-	var ctx = canvas.getContext("2d");
-
-	// Event listeners for canvas...
-	canvas.addEventListener("mousedown", doSomething);
-    canvas.addEventListener("mousemove", doSomething);
-    canvas.addEventListener("touchstart", doSomething);
-    canvas.addEventListener("touchmove", doSomething);
-    canvas.addEventListener("touchend", doSomething);
-
-	
-	var Grid = {};
-    Grid.width = windowW/cell_dim;
-    Grid.height = windowH/cell_dim;
-    DrawLine(ctx);
+    var ctx = canvas.getContext("2d");
     
     
     /*
@@ -59,55 +44,29 @@ $(document).ready(function(){
       I think this is necessary because in Snake, you want to do a lot of fast sequential moves.
      */
 
-	// Event listeners for canvas...
+    // Event listeners for canvas...
     $(canvas).on("mousedown mousemove touchstart touchmove touchend", function(evt){
         doSomething(evt, moveQ)
     })
 
-	var Grid = {};
+    var Grid = {};
     Grid.width = windowW/cell_dim;
     Grid.height = windowH/cell_dim;
     
     var Snake = {body:[{x:0, y:0}], 
                  direction:{x:1, y:0}}
     Grid[0] = {0:"snake"}
-    function animationLoop(){
-        step(Snake, Grid)
+
+    var Letters = [];
+    for (var i = 0; i < LETTERNUM; i ++) {
+        randX = Math.floor(Math.random()*(windowW/cell_dim));
+        randY = Math.floor(Math.random()*(windowH/cell_dim));
+        Letters.push({
+            x: randX,
+            y: randY
+        });
+        Grid[randX] = {randY:"letter"};
     }
-    
-
-});
-function DrawLine(ctx){
-	ctx.moveTo(0,0);
-	ctx.lineTo(0, 768);
-	ctx.moveTo(0,0);
-	ctx.lineTo(1024, 0);
-	ctx.moveTo(1024,0);
-	ctx.lineTo(1024, 768);
-	ctx.moveTo(1024,768);
-	ctx.lineTo(0, 768);
-
-	ctx.stroke();
-}
-
-function doSomething() {
-	console.log("did something");
-}
-
-
-
-function step(snake, grid){
-
-	var Letters = [];
-	for (var i = 0; i < LETTERNUM; i ++) {
-		randX = Math.floor(Math.random()*(windowW/cell_dim));
-		randY = Math.floor(Math.random()*(windowH/cell_dim));
-		Letters.push({
-			x: randX,
-			y: randY
-		});
-		Grid[randX] = {randY:"letter"};
-	}
 
 
     
@@ -141,10 +100,10 @@ function doSomething(event, moveQ) {
 
     var element = document.getElementById('test_el');
     // var hammertime = Hammer(element).on("tap", function, event);{
-    // 	alert('YOU DONE TAPPED!');
+    //  alert('YOU DONE TAPPED!');
     // });
-	
-	console.log("did something");
+    
+    console.log("did something");
 
 }
 
@@ -191,27 +150,26 @@ function step(snake, grid, moveQ){
         grid[tail.x][tail.y] = "snake"
     }
 }
-}
 
 function drawSnake(ctx, snake) {
-	ctx.fillStyle = "black";
-	for (var i = 0; i < snake.body.length; i ++) {
-		posX = snake.body[i].x * cell_dim;
-		posY = snake.body[i].y * cell_dim;
-		ctx.fillRect(posX, posY, cell_dim, cell_dim);
-	}
+    ctx.fillStyle = "black";
+    for (var i = 0; i < snake.body.length; i ++) {
+        posX = snake.body[i].x * cell_dim;
+        posY = snake.body[i].y * cell_dim;
+        ctx.fillRect(posX, posY, cell_dim, cell_dim);
+    }
 }
 
 function drawLetters(ctx, letters) {
-	ctx.fillStyle = "blue";
-	for (var i = 0; i < letters.length; i ++) {
-		posX = letters[i].x * cell_dim;
-		posY = letters[i].y * cell_dim;
-		ctx.fillRect(posX, posY, cell_dim, cell_dim);
-	}
+    ctx.fillStyle = "blue";
+    for (var i = 0; i < letters.length; i ++) {
+        posX = letters[i].x * cell_dim;
+        posY = letters[i].y * cell_dim;
+        ctx.fillRect(posX, posY, cell_dim, cell_dim);
+    }
 }
 
 var clearCanvas = function(ctx) {
-	ctx.fillStyle="red";
-	ctx.fillRect(0,0,999999,999999);
+    ctx.fillStyle="red";
+    ctx.fillRect(0,0,999999,999999);
 };
