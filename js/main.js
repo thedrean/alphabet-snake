@@ -25,7 +25,11 @@ $(document).ready(function(){
 		width: windowW
 	});
 
-
+        
+    /*
+      When the player swipes the screen a certain way, it will add the moves to a move Queue.
+      I think this is necessary because in Snake, you want to do a lot of fast sequential moves.
+     */
 	var moveQ = []
 
 	var canvas = document.getElementById("canvas");
@@ -47,17 +51,6 @@ $(document).ready(function(){
     });
     	
 	var ctx = canvas.getContext("2d");
-    
-    
-    /*
-      When the player swipes the screen a certain way, it will add the moves to a move Queue.
-      I think this is necessary because in Snake, you want to do a lot of fast sequential moves.
-     */
-
-	// Event listeners for canvas...
-    $(canvas).on("mousedown mousemove touchstart touchmove touchend", function(evt){
-        doSomething(evt, moveQ)
-    })
 
 	var Grid = {};
     Grid.width = windowW/cell_dim;
@@ -104,13 +97,6 @@ $(document).ready(function(){
     // go go go
     animationLoop();
 });
-
-function doSomething(event, moveQ) {
-    // based on the event attributes, we should add a certain move to the moveQ
-
-	console.log("did something");
-
-}
 
 function changedir(direction, moveQ){
     moveQ.push(direction)
