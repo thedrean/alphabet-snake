@@ -20,9 +20,6 @@ $(document).ready(function(){
         event.preventDefault();
     });
 
-    var windowH = $(window).height();
-    var windowW = $(window).width();
-
     $('.start').on("click", function() {
         $('.m-instruct, .m-overlay').fadeOut();
         drawSnake(ctx, Snake);
@@ -38,8 +35,8 @@ $(document).ready(function(){
         location.reload(true);
     });
 
-	var windowH = $(window).height();
-	var windowW = $(window).width();
+    var windowH = $(window).height();
+    var windowW = $(window).width();
 
     $("#canvas").attr({
         height: windowH,
@@ -276,22 +273,37 @@ function step(snake, grid, Letters) {
     }
 }
 
-function drawSnake(ctx, letters) {
-	ctx.fillStyle = "#a1daa6";
+function drawSnake(ctx, snake) {
+    ctx.fillStyle = "#a1daa6";
     ctx.font = "100px Courier";
-	for (var i = 0; i < snake.body.length; i ++) {
-		posX = snake.body[i].x * cell_dim;
-		posY = snake.body[i].y * cell_dim;
+    for (var i = 0; i < snake.body.length; i ++) {
+        posX = snake.body[i].x * cell_dim;
+        posY = snake.body[i].y * cell_dim;
         letter = snake.body[i].ch;
         if (letter > 64)
             ctx.fillText(String.fromCharCode(letter),posX, posY+cell_dim);
         else
             ctx.fillRect(posX, posY, cell_dim, cell_dim);
-	}
+    }
 }
 
 function drawLetters(ctx, letters) {
     ctx.fillStyle = "#80dae9";
+    ctx.font="100px Courier";
+    for (var i = 0; i < letters.length; i ++) {
+        posX = (letters[i].x * cell_dim);
+        posY = (letters[i].y * cell_dim)+cell_dim;
+        letter = letters[i].ch;
+        ctx.fillText(letter, posX, posY)
+    }
+}
+
+var clearCanvas = function(ctx) {
+    ctx.fillStyle="#f4f4f4";
+    ctx.fillRect(0,0,999999,999999);
+};
+
+x.fillStyle = "#80dae9";
 	ctx.font="100px Courier";
 	for (var i = 0; i < letters.length; i ++) {
 		posX = (letters[i].x * cell_dim);
