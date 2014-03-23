@@ -22,6 +22,10 @@ $(document).ready(function(){
 
     $('.start').on("click", function() {
         $('.m-instruct, .m-overlay').fadeOut();
+        drawSnake(ctx, Snake);
+        drawLetters(ctx, Letters);
+        // go go go
+        animationLoop();
     });
 
 	var windowH = $(window).height();
@@ -111,10 +115,6 @@ $(document).ready(function(){
     }
 
     clearCanvas(ctx);
-    drawSnake(ctx, Snake);
-    drawLetters(ctx, Letters);
-    // go go go
-    animationLoop();
 });
 /*
 function changedir(direction, moveQ) {
