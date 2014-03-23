@@ -23,6 +23,13 @@ $(document).ready(function(){
     var windowH = $(window).height();
     var windowW = $(window).width();
 
+    $('.start').on("click", function() {
+        $('.m-instruct, .m-overlay').fadeOut();
+    });
+
+	var windowH = $(window).height();
+	var windowW = $(window).width();
+
     $("#canvas").attr({
         height: windowH,
         width: windowW
