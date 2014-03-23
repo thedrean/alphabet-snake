@@ -221,7 +221,7 @@ function step(snake, grid, Letters) {
 }
 
 function drawSnake(ctx, snake) {
-	ctx.fillStyle = "black";
+	ctx.fillStyle = "#80dae9";
 	for (var i = 0; i < snake.body.length; i ++) {
 		posX = snake.body[i].x * cell_dim;
 		posY = snake.body[i].y * cell_dim;
@@ -240,7 +240,7 @@ function drawLetters(ctx, letters) {
 }
 
 var clearCanvas = function(ctx) {
-	ctx.fillStyle="red";
+	ctx.fillStyle="#f4f4f4";
 	ctx.fillRect(0,0,999999,999999);
 };
 
