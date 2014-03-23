@@ -10,83 +10,71 @@ window.requestAnimFrame = (function(){
 
 var cell_dim = 64;              // cells are squares, only need one dimension
 var LETTERNUM = 3;              // magic number for now on number of letters
-
-var cell_dim = 64;				// cells are squares, only need one dimension
-var LETTERNUM = 3;				// magic number for now on number of letters
-var moveQ = []					// makin moveQ global cuz fuckit
+var moveQ = []                  // makin moveQ global cuz fuckit
 var swoosh = "../sounds/Swoosh03.mp3";
 var alphabet = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ").split("");
 
 $(document).ready(function(){
 
-	$('body').bind("touchmove", {}, function(event){
-  		event.preventDefault();
-	});
+    $('body').bind("touchmove", {}, function(event){
+        event.preventDefault();
+    });
 
-	var windowH = $(window).height();
-	var windowW = $(window).width();
+    var windowH = $(window).height();
+    var windowW = $(window).width();
 
     $("#canvas").attr({
         height: windowH,
         width: windowW
     });
-  
-	$("#canvas").attr({
-		height: windowH,
-		width: windowW
-	});
 
-	var canvas = document.getElementById("canvas");
+    var canvas = document.getElementById("canvas");
         
     /*
       When the player swipes the screen a certain way, it will add the moves to a move Queue.
       I think this is necessary because in Snake, you want to do a lot of fast sequential moves.
      */
-	var rightswipe = Hammer(canvas).on("swiperight", function(event){
-    	moveQ.push({x:1,y:0});
-    	playSound(swoosh);
+    var rightswipe = Hammer(canvas).on("swiperight", function(event){
+        moveQ.push({x:1,y:0});
+        playSound(swoosh);
     });
     var leftswipe = Hammer(canvas).on("swipeleft", function(event){
-    	moveQ.push({x:-1,y:0});
-    	playSound(swoosh);
+        moveQ.push({x:-1,y:0});
+        playSound(swoosh);
     });
     var upswipe = Hammer(canvas).on("swipeup", function(event){
-    	moveQ.push({x:0,y:-1});
-    	playSound(swoosh);
+        moveQ.push({x:0,y:-1});
+        playSound(swoosh);
     });
     var downswipe = Hammer(canvas).on("swipedown", function(event){
-    	moveQ.push({x:0,y:1});
-    	playSound(swoosh);
+        moveQ.push({x:0,y:1});
+        playSound(swoosh);
     });
 
-    });
-    	
     /* Adding arrowkey functionality for testing on PC */
     document.onkeydown = checkKey;
     function checkKey(e) {
-    	e = e || window.event;
-    	switch(e.keyCode) {
-    		case 39: //right
-    			moveQ.push({x:1,y:0});
-    			break;
-    		case 37: //left
-    			moveQ.push({x:-1,y:0});
-    			break;
-    		case 38: //up
-    			moveQ.push({x:0,y:-1});
-    			break;
-    		case 40: //down
-    			moveQ.push({x:0,y:1});
-    			break;
-    	}
-    	playSound(swoosh);
+        e = e || window.event;
+        switch(e.keyCode) {
+            case 39: //right
+                moveQ.push({x:1,y:0});
+                break;
+            case 37: //left
+                moveQ.push({x:-1,y:0});
+                break;
+            case 38: //up
+                moveQ.push({x:0,y:-1});
+                break;
+            case 40: //down
+                moveQ.push({x:0,y:1});
+                break;
+        }
+        playSound(swoosh);
     }
-        	
-	var ctx = canvas.getContext("2d");
-
+            
     var ctx = canvas.getContext("2d");
-   
- 	var Grid = {};
+
+    var Grid = {};
     Grid.width = windowW/cell_dim;
     Grid.height = windowH/cell_dim;
     
@@ -96,18 +84,8 @@ $(document).ready(function(){
 
     var Letters = [];
     for (var i = 0; i < LETTERNUM; i ++) {
-        randX = Math.floor(Math.random()*(windowW/cell_dim));
-        randY = Math.floor(Math.random()*(windowH/cell_dim));
-        Letters.push({
-            x: randX,
-            y: randY
-        });
-        Grid[randX] = {randY:"letter"};
-    }
-	var Letters = [];
-	for (var i = 0; i < LETTERNUM; i ++) {
         generateLetter(Letters, Grid)
-	}
+    }
 
   
     var last = Date.now()
@@ -147,18 +125,18 @@ function generateLetter(Letters, Grid){
         if (!Grid[randX] || !Grid[randX][randY])
             break
     }
-	if(alphabet[0]) {
-		var nextLetter = alphabet[0];
-		alphabet = alphabet.slice(1);
-	}
-	Letters.push({
-		x: randX,
-		y: randY,
-		ch: nextLetter
-	});
+    if(alphabet[0]) {
+        var nextLetter = alphabet[0];
+        alphabet = alphabet.slice(1);
+    }
+    Letters.push({
+        x: randX,
+        y: randY,
+        ch: nextLetter
+    });
     if (!Grid[randX])
-	    Grid[randX] = {};
-	Grid[randX][randY] = "letter";
+        Grid[randX] = {};
+    Grid[randX][randY] = "letter";
 }
 
 function step(snake, grid, Letters) {
@@ -243,8 +221,7 @@ function step(snake, grid, Letters) {
 }
 
 function drawSnake(ctx, snake) {
-<<<<<<< HEAD
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#80dae9";
     for (var i = 0; i < snake.body.length; i ++) {
         posX = snake.body[i].x * cell_dim;
         posY = snake.body[i].y * cell_dim;
@@ -253,37 +230,16 @@ function drawSnake(ctx, snake) {
 }
 
 function drawLetters(ctx, letters) {
-    ctx.fillStyle = "blue";
+    ctx.font="100px Courier";
     for (var i = 0; i < letters.length; i ++) {
-        posX = letters[i].x * cell_dim;
-        posY = letters[i].y * cell_dim;
-        ctx.fillRect(posX, posY, cell_dim, cell_dim);
+        posX = (letters[i].x * cell_dim);
+        posY = (letters[i].y * cell_dim)+cell_dim;
+        letter = letters[i].ch;
+        ctx.fillText(letter, posX, posY)
     }
 }
 
 var clearCanvas = function(ctx) {
-    ctx.fillStyle="red";
+    ctx.fillStyle="#f4f4f4";
     ctx.fillRect(0,0,999999,999999);
-	ctx.fillStyle = "#80dae9";
-	for (var i = 0; i < snake.body.length; i ++) {
-		posX = snake.body[i].x * cell_dim;
-		posY = snake.body[i].y * cell_dim;
-		ctx.fillRect(posX, posY, cell_dim, cell_dim);
-	}
-}
-
-function drawLetters(ctx, letters) {
-	ctx.font="100px Courier";
-	for (var i = 0; i < letters.length; i ++) {
-		posX = (letters[i].x * cell_dim);
-		posY = (letters[i].y * cell_dim)+cell_dim;
-		letter = letters[i].ch;
-		ctx.fillText(letter, posX, posY)
-	}
-}
-
-var clearCanvas = function(ctx) {
-	ctx.fillStyle="#f4f4f4";
-	ctx.fillRect(0,0,999999,999999);
 };
-
