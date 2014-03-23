@@ -2,6 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+    <!-- MOBILE THINGS -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content=yes>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- screen fix -->
+    <meta name="viewport" id="vp" content="initial-scale=1.0,user-scalable=no,maximum-scale=1,width=device-width">
+    <!-- prevents iPhone5 letterboxing-->
+    <meta name="viewport" id="vp" content="initial-scale=1.0,user-scalable=no,maximum-scale=1" media="(device-height: 568px)">
+
+    <!-- APP ICONS -->
+<!--     <link rel="apple-touch-icon" href="touch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="touch-icon-iphone-retina.png"> -->
+    <link rel="apple-touch-icon" sizes="152x152" href="images/touch-icon-ipad-retina.png">
+
+    <!-- START UP SCREEN -->
+
+    <link href="images/startup.png"
+          media="(device-width: 768px) and (device-height: 1024px)
+             and (orientation: landscape)
+             and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image">
+
+
+
   <title>Alphabet Snake: a game for toddlers</title>
   <!-- JQUERY -->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
@@ -15,6 +40,16 @@
 </head>
 
 <body>
+  <div class="m-overlay"></div>
+  <div class="m-instruct">
+    <h1>Alphabet Snake</h1>
+    <img src="images/swipe.svg"> Swipe to collect the alphabet<br>
+    <a class="start">Let's Play!</a>
+  </div>
+  <div class="m-instruct over">
+    <h1>Nice job!</h1>
+    <a class="restart">Try again</a>
+  </div>
 	<canvas id="canvas"></canvas>  
 </body>
 </html>
