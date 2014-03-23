@@ -31,6 +31,16 @@ $(document).ready(function(){
         animationLoop();
     });
 
+    // restart attempt & fail
+    
+    $('.restart').on("click", function() {
+        $('.over, .m-overlay').fadeOut();        
+        drawSnake(ctx, Snake);
+        drawLetters(ctx, Letters);
+        // go go go
+        animationLoop();
+    });
+
 	var windowH = $(window).height();
 	var windowW = $(window).width();
 
@@ -89,8 +99,14 @@ $(document).ready(function(){
     Grid.width = windowW/cell_dim;
     Grid.height = windowH/cell_dim;
     
-    var Snake = {body:[{x:0, y:0}], 
-                 direction:{x:1, y:0}}
+    var Snake = {
+        body:[{
+            x:0, 
+            y:0,
+            ch: 64  // char code 64 is A-1
+        }], 
+        direction:{x:1, y:0}
+    }
     Grid[0] = {0:"snake"}
 
     var Letters = [];
@@ -110,6 +126,7 @@ $(document).ready(function(){
             drawLetters(ctx, Letters);
             if (gameover){
                 cancelAnimationFrame(animframeid)
+                $('.over, .m-overlay').fadeIn();
                 return
             }
             last = Date.now()
@@ -147,83 +164,119 @@ function generateLetter(Letters, Grid){
 }
 
 function step(snake, grid, Letters) {
+    // Grab the next direction out of the move queue
     if (moveQ[0]) {
         snake.direction = moveQ[0]
         moveQ = moveQ.slice(1)
-    }// else
-     //   direction = snake.direction
-    var newhead = {x: snake.body[0].x+snake.direction.x, y:snake.body[0].y+snake.direction.y}
-    
-    if (newhead.x >= 0 && newhead.x < grid.width && newhead.y >= 0 && newhead.y < grid.height)
-        ;
-    else{
-
-        // TODO: Make snake stay or change direction instead of gaameover
-
-        // You lose/game over or whatever
-        console.log("Game over try again etc etc")
-        return true
     }
+
+    // Set the new head to the direction popped from the queue
+    var newhead = {
+        x: snake.body[0].x+snake.direction.x, 
+        y: snake.body[0].y+snake.direction.y,
+        ch: snake.body[0].ch
+    }
+    // And reset it if it goes out of bounds
+    if (newhead.x > grid.width)
+        newhead.x = 0;
+    else if (newhead.x < 0) 
+        newhead.x = Math.floor(grid.width);
+    else if (newhead.y > grid.height)
+        newhead.y = 0;
+    else if (newhead.y < 0)
+        newhead.y = Math.floor(grid.height);
+
+    // Are the coordinates of the newhead defined?
     if (grid[newhead.x] && grid[newhead.x][newhead.y]){
+        // If yes, there is either a letter here or a snake body here
         var obj = grid[newhead.x][newhead.y];
         if (obj == "letter"){
-            snake.body.unshift(newhead)
-            grid[newhead.x][newhead.y] = "snake"
-            for(var i=0; i<Letters.length; i++){
-                var l = Letters[i]
-                if (l.x == newhead.x && l.y == newhead.y){
-                    
-                    // TODO: Make sure letters are collected sequentially.
-                    console.log(Letters[i].ch);
-                    
-                    var tmpary = Letters.slice(0, i).concat(Letters.slice(i+1))
-                    Letters.pop()
-                    tmpary.forEach(function(el, ind){
-                        Letters[ind] = el // medium hacky, probs not the best way to do this
-                    })
-                    if(alphabet.length > 0) {
-                        generateLetter(Letters, grid);
-                    } else {
-                        if(Letters.length==0) {
-                             console.log("You win!");
-                             return true;
+            // Get the last letter
+            var lastLetter = snake.body[snake.body.length-1].ch;
+            // Figure out which letter we're getting...
+            for (var i = 0; i < Letters.length; i++) {
+                var l = Letters[i];
+                if(l.x == newhead.x && l.y == newhead.y) {
+                    // This is our letter... make sure it's right...
+                    if (lastLetter+1 == l.ch.charCodeAt(0)) {
+                        // This is the one
+                        // deep copy
+                        oldSnakeBody = [];
+                        for (var i = 0; i < snake.body.length; i++) {
+                            oldSnakeBody.push({
+                                x: snake.body[i].x, 
+                                y: snake.body[i].y,
+                               // ch: snake.body[i].ch
+                            });
                         }
+                         // First move the head to the newhead...
+                        snake.body[0].x = newhead.x;
+                        snake.body[0].y = newhead.y;
+                        //snake.body[0].ch = newhead.ch;
+                        console.log(snake.body[0]);
+                        // Update the grid
+                        if (!grid[newhead.x])
+                            grid[newhead.x] = {};
+                        grid[newhead.x][newhead.y] = "snake";
+                        // And then have the rest of the body follow...
+                        for (var i = 0; i < oldSnakeBody.length - 1; i++) {
+                            snake.body[i+1].x = oldSnakeBody[i].x;
+                            snake.body[i+1].y = oldSnakeBody[i].y;
+                            //snake.body[i+1].ch = oldSnakeBody[i].ch;
+                        }
+                        // Pop the last of the body and make it a snake
+                        var last = oldSnakeBody.pop();
+                        grid[last.x][last.y] = "undefined";
+                        snake.body.push({
+                            x: last.x,
+                            y: last.y,
+                            ch: l.ch.charCodeAt(0)
+                        });
+                        Letters.shift();
+                         if(alphabet.length > 0)
+                            generateLetter(Letters, grid);
+                        else {
+                            if(Letters.length==0) {
+                                 console.log("You win!");
+                                 return true;
+                            }
+                        }
+                        break;
                     }
-                    break;
                 }
+                // else we just let it sit there.  you can't get it yet!
             }
-        }else{
-
-            /* 
-            This means you ran into yourself.  Not sure if this is 
-            toddler friendly/ easy enough?  We could do a few things:
-                1) Make it so that when you change direction to go 
-                backwards into yourself it doesn't register the command.
-                2) Make it so that when you hit your tail you stop.
-                3) Make it so that when you hit your tail you change
-                direction.
-
-                1 is plausible, but 2 and 3 mean that it can still be 
-                unwinnable since you shouldn't be able to go through
-                yourself... or can you?
-            */
-
-            // You lose
-            console.log("Game over try again etc etc")
-            return true
-        }
+        } else {
+            // We ran into ourself.  Gameover :(
+            return true;
+        } 
     } else {
-        var head = snake.body[0]
-        var tail = snake.body.pop()
-        
-        grid[tail.x][tail.y] = undefined
-        
-        tail = {x:head.x+snake.direction.x, y:head.y+snake.direction.y}
-        snake.body.unshift(tail)
-
-        if (!grid[tail.x])
-            grid[tail.x] = {}
-        grid[tail.x][tail.y] = "snake"
+        // There is nothing here, so we can move the snake forward.
+        // Deep copy of the snake...
+        // FUCKING PASS BY REFERENCE, HUH? HUH?
+        oldSnakeBody = [];
+        for (var i = 0; i < snake.body.length; i++) {
+            oldSnakeBody.push({
+                x: snake.body[i].x, 
+                y: snake.body[i].y,
+                ch: snake.body[i].ch
+            });
+        }
+        // First move the head to the newhead...
+        snake.body[0].x = newhead.x;
+        snake.body[0].y = newhead.y;
+        // Update the grid
+        if (!grid[newhead.x])
+            grid[newhead.x] = {};
+        grid[newhead.x][newhead.y] = "snake";
+        // And then have the rest of the body follow...
+        for (var i = 0; i < oldSnakeBody.length - 1; i++) {
+            snake.body[i+1].x = oldSnakeBody[i].x;
+            snake.body[i+1].y = oldSnakeBody[i].y;
+        }
+        // Pop the last of the body and clear it from the grid
+        var last = oldSnakeBody.pop();
+        grid[last.x][last.y] = undefined;
     }
 }
 
@@ -244,6 +297,28 @@ function drawLetters(ctx, letters) {
         letter = letters[i].ch;
         ctx.fillText(letter, posX, posY)
     }
+	ctx.fillStyle = "#a1daa6";
+    ctx.font = "100px Courier";
+	for (var i = 0; i < snake.body.length; i ++) {
+		posX = snake.body[i].x * cell_dim;
+		posY = snake.body[i].y * cell_dim;
+        letter = snake.body[i].ch;
+        if (letter > 64)
+            ctx.fillText(String.fromCharCode(letter),posX, posY+cell_dim);
+        else
+            ctx.fillRect(posX, posY, cell_dim, cell_dim);
+	}
+}
+
+function drawLetters(ctx, letters) {
+    ctx.fillStyle = "#80dae9";
+	ctx.font="100px Courier";
+	for (var i = 0; i < letters.length; i ++) {
+		posX = (letters[i].x * cell_dim);
+		posY = (letters[i].y * cell_dim)+cell_dim;
+		letter = letters[i].ch;
+		ctx.fillText(letter, posX, posY)
+	}
 }
 
 var clearCanvas = function(ctx) {
