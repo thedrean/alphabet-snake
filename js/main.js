@@ -128,8 +128,7 @@ function generateLetter(Letters, Grid){
 	if(alphabet[0]) {
 		var nextLetter = alphabet[0];
 		alphabet = alphabet.slice(1);
-	} else
-		console.log("YOU WIN");
+	}
 	Letters.push({
 		x: randX,
 		y: randY,
@@ -141,7 +140,6 @@ function generateLetter(Letters, Grid){
 }
 
 function step(snake, grid, Letters) {
-    console.log('steppin');
     if (moveQ[0]) {
         snake.direction = moveQ[0]
         moveQ = moveQ.slice(1)
@@ -164,18 +162,29 @@ function step(snake, grid, Letters) {
             for(var i=0; i<Letters.length; i++){
                 var l = Letters[i]
                 if (l.x == newhead.x && l.y == newhead.y){
+                    
+                    // TODO: Make sure letters are collected sequentially.
+                    console.log(Letters[i].ch);
+                    
                     var tmpary = Letters.slice(0, i).concat(Letters.slice(i+1))
                     Letters.pop()
                     tmpary.forEach(function(el, ind){
                         Letters[ind] = el // medium hacky, probs not the best way to do this
                     })
-                    generateLetter(Letters, grid)
-                    break
+                    if(alphabet.length > 0) {
+                        generateLetter(Letters, grid);
+                    } else {
+                        if(Letters.length==0) {
+                             console.log("You win!");
+                             return true;
+                        }
+                    }
+                    break;
                 }
             }
         }else{
             // You lose
-            alert("Game over try again etc etc")
+            console.log("Game over try again etc etc")
             return true
         }
     } else {
