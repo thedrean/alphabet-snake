@@ -117,8 +117,13 @@ function changedir(direction, moveQ) {
 }*/
 
 function generateLetter(Letters, Grid){
-    var randX = Math.floor(Math.random()*(Grid.width));
-	var randY = Math.floor(Math.random()*(Grid.height));
+    var randX, randY
+    while(true){
+        randX = Math.floor(Math.random()*(Grid.width));
+        randY = Math.floor(Math.random()*(Grid.height));
+        if (!Grid[randX] || !Grid[randX][randY])
+            break
+    }
 	Letters.push({
 		x: randX,
 		y: randY
