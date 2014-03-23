@@ -278,7 +278,7 @@ function step(snake, grid, Letters) {
 }
 
 function drawSnake(ctx, snake) {
-	ctx.fillStyle = "#39b54a";
+	ctx.fillStyle = "#a1daa6";
     ctx.font = "100px Courier";
 	for (var i = 0; i < snake.body.length; i ++) {
 		posX = snake.body[i].x * cell_dim;
