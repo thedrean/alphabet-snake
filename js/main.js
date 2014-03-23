@@ -34,11 +34,8 @@ $(document).ready(function(){
     // restart attempt & fail
     
     $('.restart').on("click", function() {
-        $('.over, .m-overlay').fadeOut();        
-        drawSnake(ctx, Snake);
-        drawLetters(ctx, Letters);
-        // go go go
-        animationLoop();
+        $('.over, .m-overlay').fadeOut();   
+        location.reload(true);
     });
 
 	var windowH = $(window).height();
@@ -213,7 +210,6 @@ function step(snake, grid, Letters) {
                         snake.body[0].x = newhead.x;
                         snake.body[0].y = newhead.y;
                         //snake.body[0].ch = newhead.ch;
-                        console.log(snake.body[0]);
                         // Update the grid
                         if (!grid[newhead.x])
                             grid[newhead.x] = {};
