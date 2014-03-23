@@ -11,6 +11,7 @@ h1 {
   text-align: center;
   color: #80dae9;
   font-size: 50px;
+  margin-bottom: 0px;
 }
 
 .m-instruct {
@@ -53,5 +54,5 @@ h1 {
   padding: 20px;
   font-size: 40px;
   display: inline-block;
-  margin-top: 50px;
+  margin-top: 100px;
 }
