@@ -303,17 +303,3 @@ var clearCanvas = function(ctx) {
     ctx.fillRect(0,0,999999,999999);
 };
 
-x.fillStyle = "#80dae9";
-	ctx.font="100px Courier";
-	for (var i = 0; i < letters.length; i ++) {
-		posX = (letters[i].x * cell_dim);
-		posY = (letters[i].y * cell_dim)+cell_dim;
-		letter = letters[i].ch;
-		ctx.fillText(letter, posX, posY)
-	}
-}
-
-var clearCanvas = function(ctx) {
-    ctx.fillStyle="#f4f4f4";
-    ctx.fillRect(0,0,999999,999999);
-};
