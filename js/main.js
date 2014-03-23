@@ -150,6 +150,9 @@ function step(snake, grid, Letters) {
     if (newhead.x >= 0 && newhead.x < grid.width && newhead.y >= 0 && newhead.y < grid.height)
         ;
     else{
+
+        // TODO: Make snake stay or change direction instead of gaameover
+
         // You lose/game over or whatever
         console.log("Game over try again etc etc")
         return true
@@ -183,6 +186,21 @@ function step(snake, grid, Letters) {
                 }
             }
         }else{
+
+            /* 
+            This means you ran into yourself.  Not sure if this is 
+            toddler friendly/ easy enough?  We could do a few things:
+                1) Make it so that when you change direction to go 
+                backwards into yourself it doesn't register the command.
+                2) Make it so that when you hit your tail you stop.
+                3) Make it so that when you hit your tail you change
+                direction.
+
+                1 is plausible, but 2 and 3 mean that it can still be 
+                unwinnable since you shouldn't be able to go through
+                yourself... or can you?
+            */
+
             // You lose
             console.log("Game over try again etc etc")
             return true
