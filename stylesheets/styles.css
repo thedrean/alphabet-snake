@@ -47,7 +47,7 @@ h1 {
   position: relative; 
 }
 
-.start {
+.start, .restart {
   background: #80dae9;
   text-decoration: none;
   color: #fff;
@@ -55,4 +55,9 @@ h1 {
   font-size: 40px;
   display: inline-block;
   margin-top: 100px;
+  cursor: pointer;
+}
+
+.over {
+  display: none;
 }

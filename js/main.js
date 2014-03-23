@@ -28,6 +28,16 @@ $(document).ready(function(){
         animationLoop();
     });
 
+    // restart attempt & fail
+    
+    $('.restart').on("click", function() {
+        $('.over, .m-overlay').fadeOut();        
+        drawSnake(ctx, Snake);
+        drawLetters(ctx, Letters);
+        // go go go
+        animationLoop();
+    });
+
 	var windowH = $(window).height();
 	var windowW = $(window).width();
 
@@ -107,6 +117,7 @@ $(document).ready(function(){
             drawLetters(ctx, Letters);
             if (gameover){
                 cancelAnimationFrame(animframeid)
+                $('.over, .m-overlay').fadeIn();
                 return
             }
             last = Date.now()
