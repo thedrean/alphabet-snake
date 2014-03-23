@@ -15,6 +15,7 @@ var cell_dim = 64;				// cells are squares, only need one dimension
 var LETTERNUM = 3;				// magic number for now on number of letters
 var moveQ = []					// makin moveQ global cuz fuckit
 var swoosh = "../sounds/Swoosh03.mp3";
+var alphabet = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ").split("");
 
 $(document).ready(function(){
 
@@ -117,11 +118,22 @@ function changedir(direction, moveQ) {
 }*/
 
 function generateLetter(Letters, Grid){
-    var randX = Math.floor(Math.random()*(Grid.width));
-	var randY = Math.floor(Math.random()*(Grid.height));
+    var randX, randY
+    while(true){
+        randX = Math.floor(Math.random()*(Grid.width));
+        randY = Math.floor(Math.random()*(Grid.height));
+        if (!Grid[randX] || !Grid[randX][randY])
+            break
+    }
+	if(alphabet[0]) {
+		var nextLetter = alphabet[0];
+		alphabet = alphabet.slice(1);
+	} else
+		console.log("YOU WIN");
 	Letters.push({
 		x: randX,
-		y: randY
+		y: randY,
+		ch: nextLetter
 	});
     if (!Grid[randX])
 	    Grid[randX] = {};
@@ -191,12 +203,13 @@ function drawSnake(ctx, snake) {
 }
 
 function drawLetters(ctx, letters) {
-    ctx.fillStyle = "blue";
-    for (var i = 0; i < letters.length; i ++) {
-        posX = letters[i].x * cell_dim;
-        posY = letters[i].y * cell_dim;
-        ctx.fillRect(posX, posY, cell_dim, cell_dim);
-    }
+	ctx.font="100px Courier";
+	for (var i = 0; i < letters.length; i ++) {
+		posX = (letters[i].x * cell_dim);
+		posY = (letters[i].y * cell_dim)+cell_dim;
+		letter = letters[i].ch;
+		ctx.fillText(letter, posX, posY)
+	}
 }
 
 var clearCanvas = function(ctx) {
