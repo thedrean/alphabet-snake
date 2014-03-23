@@ -3,4 +3,55 @@ body, html, canvas {
 	overflow-y: hidden;
   padding: 0;
   margin: 0;
+  font-family: "Courier";
+
+}
+
+h1 {
+  text-align: center;
+  color: #80dae9;
+  font-size: 50px;
+}
+
+.m-instruct {
+  background-color: red;
+  background: #f4f4f4;
+  border: 3px solid #80dae9;
+  font-size: 30px;
+  left: 15%;
+  margin: 0 auto;
+  padding: 100px 0;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  width: 70%;
+
+}
+
+.m-overlay {
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  top: 0;left: 0;
+  background: #80dae9;
+  opacity: .4;
+}
+
+.m-instruct img {
+  top: 30px;
+  position: relative; 
+}
+
+.start {
+  background: #80dae9;
+  text-decoration: none;
+  color: #fff;
+  padding: 20px;
+  font-size: 40px;
+  display: inline-block;
+  margin-top: 50px;
 }

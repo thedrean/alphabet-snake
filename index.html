@@ -19,11 +19,11 @@
 
     <!-- START UP SCREEN -->
 
-        <link href="images/startup.png"
-              media="(device-width: 768px) and (device-height: 1024px)
-                 and (orientation: landscape)
-                 and (-webkit-device-pixel-ratio: 2)"
-              rel="apple-touch-startup-image">
+    <link href="images/startup.png"
+          media="(device-width: 768px) and (device-height: 1024px)
+             and (orientation: landscape)
+             and (-webkit-device-pixel-ratio: 2)"
+          rel="apple-touch-startup-image">
 
 
 
@@ -40,6 +40,12 @@
 </head>
 
 <body>
+  <div class="m-overlay"></div>
+  <div class="m-instruct">
+    <img src="images/swipe.svg"> Swipe to collect the alphabet<br>
+    <a href="#" class="start">Let's Play!</a>
+
+  </div>
 	<canvas id="canvas"></canvas>  
 </body>
 </html>

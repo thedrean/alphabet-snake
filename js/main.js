@@ -20,6 +20,10 @@ $(document).ready(function(){
   		event.preventDefault();
 	});
 
+    $('.start').on("click", function() {
+        $('.m-instruct, .m-overlay').fadeOut();
+    });
+
 	var windowH = $(window).height();
 	var windowW = $(window).width();
 
